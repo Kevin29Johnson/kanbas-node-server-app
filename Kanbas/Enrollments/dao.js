@@ -10,5 +10,6 @@ export  function unEnrollUserFromCourse(userId, courseId){
   );
 }
 export function fetchEnrollments(){
+  console.log()
   return Database.enrollments;
 }
