@@ -21,3 +21,11 @@ export function createCourse(course) {
       enrollments.some((enrollment) => enrollment.user === userId && enrollment.course === course._id));
     return enrolledCourses;
   }
+
+  export function updateCourse(courseId, courseUpdates) {
+    const { courses } = Database;
+    const course = courses.find((course) => course._id === courseId);
+    Object.assign(course, courseUpdates);
+    return course;
+  }
+  
