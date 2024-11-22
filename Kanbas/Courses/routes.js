@@ -1,6 +1,7 @@
 import * as dao from "./dao.js";
 import * as modulesDao from "../Modules/dao.js";
 import * as assignmentDao from "../Assignments/dao.js"
+import * as enrollmentDao from "../Enrollments/dao.js"
 import assignments from "../Database/assignments.js";
 
 
@@ -58,6 +59,31 @@ export default function CourseRoutes(app) {
     res.send(newAssignment);
   });
 
+  //unenroll
+  app.delete("/api/users/:userId/courses/:courseId", (req, res) => {
+    const { userId, courseId } = req.params;
+  
+    try {
+      enrollmentDao.unEnrollUserFromCourse(userId, courseId);
+      res.sendStatus(204); // Successfully processed, no content to return
+    } catch (error) {
+      console.error("Error unenrolling user:", error);
+      res.status(500).send("Failed to unenroll user.");
+    }
+  });
+  //enroll
+  app.post("/api/users/:userId/courses/:courseId", (req, res) => {
+    const { userId, courseId } = req.params;
+    console.log("ids:"+userId,courseId)
+    try {
+      enrollmentDao.enrollUserInCourse(userId, courseId);
+      res.sendStatus(201); // Successfully created
+    } catch (error) {
+      console.error("Error enrolling user:", error);
+      res.status(500).send("Failed to enroll user.");
+    }
+  });
+  
 }
 
 export function updateCourse(courseId, courseUpdates) {
