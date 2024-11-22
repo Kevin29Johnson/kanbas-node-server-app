@@ -9,7 +9,6 @@ export  function unEnrollUserFromCourse(userId, courseId){
     (enrollment) => !(enrollment.user === userId && enrollment.course === courseId)
   );
 }
-
 export function fetchEnrollments(){
   return Database.enrollments;
 }
