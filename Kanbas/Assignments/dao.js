@@ -1,6 +1,7 @@
 import Database from "../Database/index.js";
 import model from "./model.js";
 
+
 export function updateAssignment(assignmentId,assignmentUpdates) {
   return model.updateOne({ _id: assignmentId }, assignmentUpdates);
     // const { assignments } = Database;
