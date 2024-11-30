@@ -7,7 +7,7 @@ export function enrollUserInCourse(user, course) {
 }
 
 export  function unEnrollUserFromCourse(userId, courseId){
-  return model.deleteOne({ userId, courseId });
+  return model.deleteOne({ user:userId, course:courseId });
 
   // Database.enrollments=Database.enrollments.filter(
   //   (enrollment) => !(enrollment.user === userId && enrollment.course === courseId)

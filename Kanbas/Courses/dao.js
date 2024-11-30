@@ -21,14 +21,14 @@ export function createCourse(course) {
 
 }
   
-  export function findCoursesForEnrolledUser(userId) {
-    // const enrollments = await enrollmentModel.find({ user: userId }).populate("course");
-    // const enrolledCourses = enrollments.map((enrollment) => enrollment.course);
-    // return enrolledCourses;
-    const { courses, enrollments } = Database;
-    const enrolledCourses = courses.filter((course) =>
-      enrollments.some((enrollment) => enrollment.user === userId && enrollment.course === course._id));
+  export async function findCoursesForEnrolledUser(userId) {
+    const enrollments = await enrollmentModel.find({ user: userId }).populate("course");
+    const enrolledCourses = enrollments.map((enrollment) => enrollment.course);
     return enrolledCourses;
+    // const { courses, enrollments } = Database;
+    // const enrolledCourses = courses.filter((course) =>
+    //   enrollments.some((enrollment) => enrollment.user === userId && enrollment.course === course._id));
+    // return enrolledCourses;
   }
 
   export function updateCourse(courseId, courseUpdates) {

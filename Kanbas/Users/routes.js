@@ -94,22 +94,34 @@ export default function UserRoutes(app) {
 
   const findCoursesForEnrolledUser = async (req, res) => {
     let { userId } = req.params;
-    //own id: current, but for anybody else its currentUser._id
+  
+    // Handle "current" user case
     if (userId === "current") {
       const currentUser = req.session["currentUser"];
       if (!currentUser) {
-        res.sendStatus(401);
+        res.sendStatus(401); // Unauthorized
         return;
       }
       userId = currentUser._id;
     }
-    const courses = await courseDao.findCoursesForEnrolledUser(userId);
-    console.log(courses);
-    
-    res.json(courses);
+  
+    try {
+      // Fetch courses for the user from the DAO
+      const courses = await courseDao.findCoursesForEnrolledUser(userId);
+  
+      // Filter out null values
+      const filteredCourses = courses.filter((course) => course !== null);
+  
+      res.json(filteredCourses);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+      res.sendStatus(500); // Internal Server Error
+    }
   };
+  
+  // Register the route
   app.get("/api/users/:userId/courses", findCoursesForEnrolledUser);
-
+  
   const createCourse = async (req, res) => {
     const currentUser = req.session["currentUser"];
     const newCourse = await courseDao.createCourse(req.body);

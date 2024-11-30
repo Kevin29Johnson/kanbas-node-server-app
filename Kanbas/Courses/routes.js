@@ -18,6 +18,8 @@ export default function CourseRoutes(app) {
  
   app.delete("/api/courses/:courseId",async  (req, res) => {
     const { courseId } = req.params;
+    console.log("in delete"+courseId);
+    
     const status=await dao.deleteCourse(courseId);
     res.send(status);
   });
@@ -66,7 +68,7 @@ export default function CourseRoutes(app) {
   app.delete("/api/users/:userId/courses/:courseId", async (req, res) => {
     const { userId, courseId } = req.params;
     const status=await enrollmentDao.unEnrollUserFromCourse(userId, courseId);
-    res.sendStatus(status); 
+    res.send(status); 
   });
   //enroll
   app.post("/api/users/:userId/courses/:courseId", async (req, res) => {
