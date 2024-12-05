@@ -2,6 +2,7 @@ import * as dao from "./dao.js";
 import * as modulesDao from "../Modules/dao.js";
 import * as assignmentDao from "../Assignments/dao.js"
 import * as enrollmentDao from "../Enrollments/dao.js"
+import * as quizzesDao from "../Quizzes/dao.js"
 import assignments from "../Database/assignments.js";
 
 
@@ -18,8 +19,7 @@ export default function CourseRoutes(app) {
  
   app.delete("/api/courses/:courseId",async  (req, res) => {
     const { courseId } = req.params;
-    console.log("in delete"+courseId);
-    
+   
     const status=await dao.deleteCourse(courseId);
     res.send(status);
   });
@@ -30,6 +30,8 @@ export default function CourseRoutes(app) {
     const status=await dao.updateCourse(courseId, courseUpdates);
     res.send(status);
   });
+
+  //Create and fetch modules
 
   app.get("/api/courses/:courseId/modules", async (req, res) => {
     const { courseId } = req.params;
@@ -47,6 +49,26 @@ export default function CourseRoutes(app) {
     res.send(newModule);
   });
 
+
+  //Create and fetch quizzes
+
+  app.get("/api/courses/:courseId/quizzes", async (req, res) => {
+    const { courseId } = req.params;
+    const quizzes = await quizzesDao.findQuizzesForCourse(courseId);
+    res.json(quizzes);
+  });
+
+  app.post("/api/courses/:courseId/quizzes",async  (req, res) => {
+    const { courseId } = req.params;
+    const quiz = {
+      ...req.body,
+      course: courseId,
+    };
+    const newQuiz = await quizzesDao.createQuiz(quiz);
+    res.send(newQuiz);
+  });
+
+//Create and fetch assignments
 
   app.get("/api/courses/:courseId/assignments", async (req, res) => {
     const { courseId } = req.params;
@@ -77,6 +99,12 @@ export default function CourseRoutes(app) {
       res.send(status); 
   });
   
+  const findUsersForCourse = async (req, res) => {
+    const { cid } = req.params;
+    const users = await enrollmentDao.findUsersForCourse(cid);
+    res.json(users);
+  };
+  app.get("/api/courses/:cid/users", findUsersForCourse);
 }
 
 export function updateCourse(courseId, courseUpdates) {
@@ -95,3 +123,5 @@ export function findCoursesForEnrolledUser(userId) {
   }
   
   
+
+ 
