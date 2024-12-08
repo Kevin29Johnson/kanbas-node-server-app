@@ -1,4 +1,14 @@
 import mongoose from "mongoose";
+// Question Schema
+const questionSchema = new mongoose.Schema({
+  type: { type: String, enum: ["Multiple Choice", "TrueFalse", "Fill in the Blanks"],  default:"Multiple Choice" },
+  title: { type: String, default:""},
+  points: { type: Number,default:0},
+  text: { type: String,default:""},
+  choices: { type: [Object], default: [] },
+  correctAnswer: { type: mongoose.Schema.Types.Mixed, default:""},
+  isEditing: { type: Boolean, default: false },
+});
 
 const quizSchema = new mongoose.Schema(
   {
@@ -25,7 +35,8 @@ const quizSchema = new mongoose.Schema(
     requireRespondusLockDownBrowser: { type: Boolean, default: false },
     requiredToViewQuizResults: { type: Boolean, default: false },
     lockQuestionsAfterAnswering: { type: Boolean, default: false },
-    published: { type: Boolean, default: false }
+    published: { type: Boolean, default: false },
+    questions: [questionSchema],
   },
   { collection: "quizzes" }
 );

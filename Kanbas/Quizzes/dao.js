@@ -22,9 +22,9 @@ export function createQuiz(quiz) {
   }
 
   export function publishQuiz(quizId) {
-   return model.updateOne({ _id: quizId }, { published: true });
+   return model.updateOne({ _id: quizId }, { isPublished: true });
  }
  
  export function unpublishQuiz(quizId) {
-   return model.updateOne({ _id: quizId }, { published: false });
+   return model.updateOne({ _id: quizId }, { isPublished: false });
  }
