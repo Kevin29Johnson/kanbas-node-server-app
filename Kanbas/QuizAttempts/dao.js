@@ -31,9 +31,13 @@ const calculateScore = (quiz, userAnswers) => {
         }
         break;
       case 'Fill in the Blanks':
-        if (question.correctAnswers.includes(userAns.answer)) {
-          correct = true;
-        }
+        const matchingChoice = question.choices.find(
+            (choice) => choice.trim().toLowerCase() === userAns.answer.trim().toLowerCase()
+          );
+    
+          if (matchingChoice) {
+            correct = true; // If a match is found, set `correct` to true
+          }
         break;
     }
 
